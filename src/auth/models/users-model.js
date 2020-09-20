@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const SECRET = process.env.SECRET || 'ash';
-const schema = require('./Users-schema');
+const schema = require('./users-schema');
 
 /**
  * @param class Users with the same structure as the schema
