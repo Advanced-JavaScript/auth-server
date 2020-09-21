@@ -49,9 +49,15 @@ users.methods.generateToken = async function () {
 
 };
 
-users.statics.list = async function() {
+users.statics.list = async function () {
   let allUsers = await this.find({});
   return allUsers;
 };
+
+// users.statics.delete = async function(){
+//   let test = await this.findByIdAndDelete('5f688cbc06a4dc0525b56caa');
+//   console.log('69',test);
+//   return test;
+// };
 
 module.exports = mongoose.model('users', users);

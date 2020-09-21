@@ -3,12 +3,14 @@
 const express = require('express');
 const basicAuth = require('./middleware/basic');
 const User = require('./models/users-model');
+const oauth = require('./middleware/oauth');
 
 const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/signin', basicAuth, signin);
 router.get('/Users', getUsers);
+router.get('/oauth', oauth, authorize);
 
 /**
  * @route POST /signup creates an individual user object and adds it to the Users database
@@ -63,4 +65,8 @@ async function getUsers(req, res, next) {
   res.status(200).json(all);
 }
 
+
+async function authorize(req, res) {
+  res.status(200).send(req.token);
+}
 module.exports = router;
