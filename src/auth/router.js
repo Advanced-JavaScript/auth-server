@@ -2,7 +2,7 @@
 
 const express = require('express');
 const basicAuth = require('./middleware/basic');
-const Users = require('./models/users-model');
+const User = require('./models/users-model');
 
 const router = express.Router();
 
@@ -17,16 +17,26 @@ router.get('/Users', getUsers);
  * @returns {Error} 500 - unexpected error
  */
 
-function signup(req, res, next) {
-  Users
-    .create(req.body)
-    .then(async (user) => {
-      const token = await Users.generateToken(user);
-      res.status(200).json({ token });
-    })
-    .catch((err) => { console.log('Something went wrong!');
-      res.status(403).send(err.message);
-    });
+async function signup(req, res, next) {
+  const oldUser = await User.find({ username: req.body.username });
+  if (oldUser) {
+    throw Error('User already exist');
+  } else {
+    let user = new User(req.body);
+    user
+      .save()
+      .then(async (user) => {
+        const token = await user.generateToken();
+        req.user = user;
+        res.set('token', token);
+        res.cookie('auth', token);
+        res.status(200).json({ token, user });
+      })
+      .catch(err => {
+        console.log('Something went wrong!');
+        res.status(403).send(err.message);
+      });
+  }
 }
 
 /**
@@ -36,9 +46,9 @@ function signup(req, res, next) {
  */
 
 function signin(req, res, next) {
-  try{
-    res.json({ token: req.token , username :req.user});
-  } catch(e){ res.status(403).json('Invalid credentials');}
+  try {
+    res.json({ token: req.token, user: req.user });
+  } catch (e) { res.status(403).json('Invalid credentials'); }
 }
 
 /**
@@ -49,7 +59,7 @@ function signin(req, res, next) {
  */
 
 async function getUsers(req, res, next) {
-  let all = await Users.list();
+  let all = await User.list();
   res.status(200).json(all);
 }
 
