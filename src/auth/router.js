@@ -18,7 +18,8 @@ router.get('/Users', getUsers);
  */
 
 async function signup(req, res, next) {
-  const oldUser = await User.find({ username: req.body.username });
+  const oldUser = await User.findOne({ username: req.body.username });
+  console.log(oldUser)
   if (oldUser) {
     throw Error('User already exist');
   } else {
