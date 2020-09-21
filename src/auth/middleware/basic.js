@@ -1,7 +1,7 @@
 'use strict';
 
 const base64 = require('base-64');
-const users = require('../models/users-model');
+const User = require('../models/users-model');
 
 module.exports = (req, res, next) => {
   if (!req.headers.authorization) {
@@ -9,13 +9,13 @@ module.exports = (req, res, next) => {
   } else {
     const basic = req.headers.authorization.split(' ').pop();
     const [user, pass] = base64.decode(basic).split(':');
-    users
+    User
       .authenticate(user, pass)
       .then(valid => {
-        return users.generateToken(valid);
+        req.user = valid;
+        return valid.generateToken();
       }).then(token => {
         req.token = token;
-        req.user=user;
         next();
       })
       .catch((err) => next(err));
