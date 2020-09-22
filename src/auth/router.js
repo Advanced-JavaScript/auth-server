@@ -3,12 +3,14 @@
 const express = require('express');
 const basicAuth = require('./middleware/basic');
 const User = require('./models/users-model');
+const oauth = require('./middleware/oauth');
 
 const router = express.Router();
 
 router.post('/signup', signup);
 router.post('/signin', basicAuth, signin);
 router.get('/Users', getUsers);
+router.get('/oauth', oauth, authorize);
 
 /**
  * @route POST /signup creates an individual user object and adds it to the Users database
@@ -18,9 +20,9 @@ router.get('/Users', getUsers);
  */
 
 async function signup(req, res, next) {
-  const oldUser = await User.find({ username: req.body.username });
+  const oldUser = await User.findOne({ username: req.body.username });
   if (oldUser) {
-    throw Error('User already exist');
+    res.status(403).send('User already exist');
   } else {
     let user = new User(req.body);
     user
@@ -63,4 +65,8 @@ async function getUsers(req, res, next) {
   res.status(200).json(all);
 }
 
+
+async function authorize(req, res) {
+  res.status(200).send(req.token);
+}
 module.exports = router;

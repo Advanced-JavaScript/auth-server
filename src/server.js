@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
 app.use(morgan('dev'));
+app.use(express.static('./public'));
 app.use('/', router);
 app.use('/',extraRouter)
 
