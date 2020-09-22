@@ -55,7 +55,7 @@ function signin(req, res, next) {
 
 /**
  * @route GET /Users
- * @returns {Users.model} 200 - An object containing all Users
+ * @returns {Users} 200 - An object containing all Users
  * @returns {Error} 403 - invalid login
  * @returns {Error} 500 - unexpected error
  */
@@ -67,6 +67,10 @@ async function getUsers(req, res, next) {
 
 
 async function authorize(req, res) {
-  res.status(200).send(req.token);
+  try {
+    res.status(200).send(req.token);
+  } catch (e) { res.status(403).json('Invalid credentials');
+  }
+  
 }
 module.exports = router;

@@ -49,6 +49,24 @@ users.methods.generateToken = async function () {
 
 };
 
+users.statics.authenticateToken = async function(token) {
+  try {
+    let validToken = jwt.verify(token, SECRET);
+    let validUser = await this.findOne({username: validToken.username});
+
+    if (validUser) {
+      return Promise.resolve({
+        user: validUser,
+      });
+    } else {
+      return Promise.reject();
+    }
+  } catch(e) {
+    return Promise.reject();
+  }
+
+};
+
 users.statics.list = async function () {
   let allUsers = await this.find({});
   return allUsers;

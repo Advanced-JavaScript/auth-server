@@ -39,6 +39,16 @@ for an Express server that implements Basic Authentication, with signup and sign
 - TOKEN_SERVER = https://github.com/login/oauth/access_token
 - REMOTE_API = https://api.github.com/user
 
+
+## Visual Validation
+ Using this [online test](https://javascript-401.netlify.app/) you can see the following results:
+
+![](./assets/test.jpg)
+![](./assets/test2.jpg)
+
 ## UML
 
 ![](./assets/class-12-uml.jpg)
+
+
+
