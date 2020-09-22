@@ -43,8 +43,8 @@ for an Express server that implements Basic Authentication, with signup and sign
 ## Visual Validation
  Using this [online test](https://javascript-401.netlify.app/) you can see the following results:
 
-![](./assets/test.jpg)
-![](./assets/test2.jpg)
+![](./assets/test.JPG)
+![](./assets/test2.JPG)
 
 ## UML
 
