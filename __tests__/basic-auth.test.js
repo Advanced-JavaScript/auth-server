@@ -29,6 +29,7 @@ describe('basic auth server', () => {
 
   it('can prevent users from signing up with an existing username', async () => {
     await agent.post('/signup').send(signinObj);
+    await agent.post('/signup').send(signinObj);
     const secondSignupRes = await agent.post('/signup').send(signinObj);
     expect(secondSignupRes.statusCode).toBe(403);
   });

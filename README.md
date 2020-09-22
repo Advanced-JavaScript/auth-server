@@ -10,7 +10,7 @@ for an Express server that implements Basic Authentication, with signup and sign
 2. mongoDb installed locally.
 3. a software to deal with server routes
 4. `npm start`
-
+5. open the browser on localhost
 
 ## Technologies
 
@@ -22,6 +22,7 @@ for an Express server that implements Basic Authentication, with signup and sign
 - Cors and Morgan
 - Bcrypt & JWT
 - base64
+- superagent
 
 ### For testing : 
 
@@ -29,10 +30,25 @@ for an Express server that implements Basic Authentication, with signup and sign
 
 ### .env requirements (where applicable):
 
-PORT = 3000
-MONGOOSE_URI = mongodb://localhost:27017/users
-SECRET = ash
+- PORT = 3000
+- MONGOOSE_URI = mongodb://localhost:27017/users
+- SECRET = ash
+- CLIENT_ID = Iv1.77db431eabde1e73
+- CLIENT_SECRET = 1cd88975498ff7129907d27de342b2ff48df6d23
+- API_SERVER = http://localhost:3000/oauth
+- TOKEN_SERVER = https://github.com/login/oauth/access_token
+- REMOTE_API = https://api.github.com/user
+
+
+## Visual Validation
+ Using this [online test](https://javascript-401.netlify.app/) you can see the following results:
+
+![](./assets/test.jpg)
+![](./assets/test2.jpg)
 
 ## UML
 
-![](./assets/class-11-uml.jpg)
+![](./assets/class-12-uml.jpg)
+
+
+

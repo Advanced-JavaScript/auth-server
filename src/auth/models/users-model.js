@@ -49,9 +49,33 @@ users.methods.generateToken = async function () {
 
 };
 
-users.statics.list = async function() {
+users.statics.authenticateToken = async function(token) {
+  try {
+    let validToken = jwt.verify(token, SECRET);
+    let validUser = await this.findOne({username: validToken.username});
+
+    if (validUser) {
+      return Promise.resolve({
+        user: validUser,
+      });
+    } else {
+      return Promise.reject();
+    }
+  } catch(e) {
+    return Promise.reject();
+  }
+
+};
+
+users.statics.list = async function () {
   let allUsers = await this.find({});
   return allUsers;
 };
+
+// users.statics.delete = async function(){
+//   let test = await this.findByIdAndDelete('5f688cbc06a4dc0525b56caa');
+//   console.log('69',test);
+//   return test;
+// };
 
 module.exports = mongoose.model('users', users);
