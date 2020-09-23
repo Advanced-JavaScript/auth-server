@@ -3,16 +3,20 @@ const {server} = require('../src/server');
 const agent = supergoose(server);
 const Users = require('../src/auth/models/users-model');
 const base64 = require('base-64');
+const jwt = require('jsonwebtoken');
+
 
 describe('basic auth server', () => {
   const signinObj = {
     username: 'Ashjan',
     password: 'blue',
+    role: 'admin',
   };
 
   const signinObj2 = {
     username: 'nour',
     password: 'red',
+    role:'user',
   };
 
   const badObj = {
@@ -99,6 +103,34 @@ describe('basic auth server', () => {
     const getResponse = await agent.get('/users');
     expect(getResponse.statusCode).toEqual(200);
     expect(getResponse.body).not.toEqual({});
+  });
+
+  it('can successfully check if the user is valid for /add route', async () => {
+    const autHeader = base64.encode(
+      `${signinObj.username}:${signinObj.password}`,
+    );
+  
+    const signinResponse = await agent
+      .post('/signin')
+      .set('authorization', `Basic ${autHeader}`);
+
+    const bearerHeader = await jwt.sign({ username: 'nour' }, 'ash');
+
+    const secretResponse = await agent.post('/add').set('authorization', `Bearer ${bearerHeader}`);
+    expect(signinResponse.statusCode).toBe(200);
+    expect(secretResponse.statusCode).toBe(500);
+  });
+
+  it('can successfully check if the user is valid for /change route', async () => {
+    const bearerHeader = await jwt.sign({ username: 'nour' }, 'ash');
+    const secretResponse = await agent.put('/change').set('authorization', `Bearer ${bearerHeader}`);
+    expect(secretResponse.statusCode).toBe(500);
+  });
+
+  it('can successfully check if the user is valid for /remove route', async () => {
+    const bearerHeader = await jwt.sign({ username: 'nour' }, 'ash');
+    const secretResponse = await agent.delete('/remove').set('authorization', `Bearer ${bearerHeader}`);
+    expect(secretResponse.statusCode).toBe(500);
   });
 
 });

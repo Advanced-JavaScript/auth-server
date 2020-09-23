@@ -33,17 +33,20 @@ for an Express server that implements Basic Authentication, with signup and sign
 - PORT = 3000
 - MONGOOSE_URI = mongodb://localhost:27017/users
 - SECRET = ash
-- CLIENT_ID = Iv1.77db431eabde1e73
-- CLIENT_SECRET = 1cd88975498ff7129907d27de342b2ff48df6d23
+- CLIENT_ID = YOUR_CLIENT_ID
+- CLIENT_SECRET = YOUR_CLIENT_SECRET
 - API_SERVER = http://localhost:3000/oauth
 - TOKEN_SERVER = https://github.com/login/oauth/access_token
 - REMOTE_API = https://api.github.com/user
 
 
 ## Visual Validation
- Using this [online test](https://javascript-401.netlify.app/) you can see the following results:
+Using this [online test](https://javascript-401.netlify.app/) you can see the following results:
 
 ![](./assets/test.JPG)
+
+For secret routes:
+
 ![](./assets/test2.JPG)
 
 ## UML

@@ -49,10 +49,10 @@ users.methods.generateToken = async function () {
 
 };
 
-users.statics.authenticateToken = async function(token) {
+users.statics.authenticateToken = async function (token) {
   try {
     let validToken = jwt.verify(token, SECRET);
-    let validUser = await this.findOne({username: validToken.username});
+    let validUser = await this.findOne({ username: validToken.username });
 
     if (validUser) {
       return Promise.resolve({
@@ -61,7 +61,7 @@ users.statics.authenticateToken = async function(token) {
     } else {
       return Promise.reject();
     }
-  } catch(e) {
+  } catch (e) {
     return Promise.reject();
   }
 
@@ -72,10 +72,17 @@ users.statics.list = async function () {
   return allUsers;
 };
 
-// users.statics.delete = async function(){
-//   let test = await this.findByIdAndDelete('5f688cbc06a4dc0525b56caa');
-//   console.log('69',test);
-//   return test;
-// };
+users.statics.can = async function (role, action) {
+  const actions = {
+    'admin': ['read', 'create', 'update', 'delete'],
+    'editor': ['read', 'update'],
+    'writer': ['read', 'create'],
+    'user': ['read'],
+  };
+  if (actions[role].includes(action)) {
+    return true;
+  } return false;
+};
+
 
 module.exports = mongoose.model('users', users);

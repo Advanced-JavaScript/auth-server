@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const notFound = require('./middleware/404');
 const internalServerError = require('./middleware/500');
 const router = require('./auth/router');
-const extraRouter = require('./auth/extra-routes');
+const secureRouter = require('./auth/extra-routes');
 
 const app = express();
 app.use(express.json());
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.static('./public'));
 app.use('/', router);
-app.use('/',extraRouter);
+app.use('/',secureRouter);
 
 app.use('*',notFound);
 app.use(internalServerError);
