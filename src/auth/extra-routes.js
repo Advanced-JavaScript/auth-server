@@ -1,11 +1,16 @@
 'use strict';
 
 const express = require('express');
-const bearerMiddleware = require('./middleware/bearer');
+const bearerAuth = require('./middleware/bearer');
+const permissions = require('./middleware/authorize');
 
-const extraRouter = express.Router();
+const secureRouter = express.Router();
 
-extraRouter.get('/secret', bearerMiddleware, secret );
+secureRouter.get('/secret', bearerAuth, secret);
+secureRouter.get('/read', bearerAuth, permissions('read'), read);
+secureRouter.post('/add', bearerAuth, permissions('create'), add);
+secureRouter.put('/change', bearerAuth, permissions('update'), change);
+secureRouter.delete('/remove', bearerAuth, permissions('delete'), remove);
 
 /**
  * @route GET/checks if the user is valid to enter specific routes
@@ -16,12 +21,46 @@ extraRouter.get('/secret', bearerMiddleware, secret );
 
 async function secret(req, res, next) {
   try {
-    res.status(200).json({ bearer:'Valid User',user:req.user });
-  } catch (e) { res.status(403).json('Invalid credentials');
+    res.status(200).json({ bearer: 'Valid User', user: req.user });
+  } catch (e) {
+    res.status(403).json('Invalid credentials');
+  }
+}
+
+async function read(req, res, next) {
+  try {
+    res.status(200).json({ message: 'Route /read worked', user: req.user });
+  } catch (e) {
+    res.status(403).json('Forbidden: Invalid credentials');
+  }
+}
+
+async function add(req, res, next) {
+  try {
+    res.status(200).json({ message: 'Route /add worked', user: req.user });
+  } catch (e) {
+    res.status(403).json('Forbidden: Invalid credentials');
+  }
+}
+
+async function change(req, res, next) {
+  try {
+    res.status(200).json({ message: 'Route /change worked', user: req.user });
+  } catch (e) {
+    res.status(403).json('Forbidden: Invalid credentials');
+  }
+}
+
+async function remove(req, res, next) {
+  try {
+    res.status(200).json({ message: 'Route /remove worked', user: req.user });
+  } catch (e) {
+    res.status(403).json('Forbidden: Invalid credentials');
   }
 }
 
 
-module.exports = extraRouter;
+
+module.exports = secureRouter;
 
 

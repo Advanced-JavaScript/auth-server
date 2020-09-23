@@ -65,7 +65,6 @@ async function getUsers(req, res, next) {
   res.status(200).json(all);
 }
 
-
 async function authorize(req, res) {
   try {
     res.status(200).send(req.token);
